@@ -25,15 +25,19 @@ install() {
   local OSSLPATH=/tmp/libopenssl
   [ ! -d ${OVPNPATH} ] && mkdir ${OVPNPATH}
   [ ! -d ${OSSLPATH} ] && mkdir ${OSSLPATH}
-  command opkg update || exit 1
+  #command opkg update || exit 1
   # install openvpn
   cd ${OVPNPATH}
-  tar xzf $(opkg download openvpn-openssl | grep Downloaded | cut -d\  -f4 | sed '$s/.$//')
+  wget http://www2.hs-esslingen.de/~lumait03/openWRT/openvpn-openssl_2.3.6-2_ar71xx.ipk
+  tar xzf openvpn-openssl_2.3.6-2_ar71xx.ipk
+  #tar xzf $(opkg download openvpn-openssl | grep Downloaded | cut -d\  -f4 | sed '$s/.$//')
   tar xzf data.tar.gz
   rm -f pkg.tar.gz data.tar.gz control.tar.gz debian-binary getopenvpn.sh
   # install libopenssl
   cd ${OSSLPATH}
-  tar xzf $(opkg download libopenssl | grep Downloaded | cut -d\  -f4 | sed '$s/.$//')
+  wget http://www2.hs-esslingen.de/~lumait03/openWRT/libopenssl_1.0.2c-0_ar71xx.ipk
+  tar xzf libopenssl_1.0.2c-0_ar71xx.ipk
+  #tar xzf $(opkg download libopenssl | grep Downloaded | cut -d\  -f4 | sed '$s/.$//')
   tar xzf data.tar.gz
   rm -f control.tar.gz debian-binary data.tar.gz
 }

@@ -21,24 +21,33 @@ START=99
 . /etc/profile
 
 install() {
-  local OVPNPATH=/tmp/openvpn
-  local OSSLPATH=/tmp/libopenssl
+  local TMP=/tmp
+  local OVPNPATH=$TMP/openvpn
+  local OSSLPATH=$TMP/libopenssl
+  local URL=http://www2.hs-esslingen.de/~lumait03/openWRT
   [ ! -d ${OVPNPATH} ] && mkdir ${OVPNPATH}
   [ ! -d ${OSSLPATH} ] && mkdir ${OSSLPATH}
-  #command opkg update || exit 1
+  # TODO NOT TESTED
+  # install liblzo and kmod
+  cd ${TMP} \
+    && wget $URL/liblzo_2.08-1_ar71xx.ipk \
+    && wget $URL/kmod-tun_3.18.20-1_ar71xx.ipk
+
+  opkg install liblzo_2.08-1_ar71xx.ipk \
+    && opkg install kmod-tun_3.18.20-1_ar71xx.ipk
+
   # install openvpn
-  cd ${OVPNPATH}
-  wget http://www2.hs-esslingen.de/~lumait03/openWRT/openvpn-openssl_2.3.6-2_ar71xx.ipk
-  tar xzf openvpn-openssl_2.3.6-2_ar71xx.ipk
-  #tar xzf $(opkg download openvpn-openssl | grep Downloaded | cut -d\  -f4 | sed '$s/.$//')
-  tar xzf data.tar.gz
+  cd ${OVPNPATH} \
+    && wget $URL/openvpn-openssl_2.3.6-2_ar71xx.ipk
+  tar xzf openvpn-openssl_2.3.6-2_ar71xx.ipk; tar xzf data.tar.gz
+  # cleanup
   rm -f pkg.tar.gz data.tar.gz control.tar.gz debian-binary getopenvpn.sh
+
   # install libopenssl
-  cd ${OSSLPATH}
-  wget http://www2.hs-esslingen.de/~lumait03/openWRT/libopenssl_1.0.2c-0_ar71xx.ipk
-  tar xzf libopenssl_1.0.2c-0_ar71xx.ipk
-  #tar xzf $(opkg download libopenssl | grep Downloaded | cut -d\  -f4 | sed '$s/.$//')
-  tar xzf data.tar.gz
+  cd ${OSSLPATH} \
+    && wget $URL/libopenssl_1.0.2c-0_ar71xx.ipk
+  tar xzf libopenssl_1.0.2c-0_ar71xx.ipk; tar xzf data.tar.gz
+  # cleanup
   rm -f control.tar.gz debian-binary data.tar.gz
 }
 

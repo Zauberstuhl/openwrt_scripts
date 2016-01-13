@@ -11,7 +11,6 @@ Add to the bottom of `/etc/profile`:
 
 Finally install dependencies and enable startup-script:
 
-    opkg install liblzo kmod-tun
     chmod +x /etc/init.d/openvpn
     /etc/init.d/openvpn enable
 
